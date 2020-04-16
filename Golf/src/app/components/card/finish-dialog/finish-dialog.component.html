@@ -1,0 +1,9 @@
+
+  <h1 mat-dialog-title>Final Score</h1>
+  <div mat-dialog-content *ngFor="let players of game$ | async">
+    <p *ngFor="let player of players.players">{{player.name}}'s score: {{player.total}}. {{player.total <= data.par ? "On to the PGA!" : "Beter luck next time."}}</p>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button [routerLink]="['']" [mat-dialog-close] cdkFocusInitial>New Game</button>
+  </div>

@@ -1,0 +1,12 @@
+<div>
+    <h1 class="title"> Select Tee</h1>
+    <button mat-raised-button color="accent" (click)="goBack()">Back</button>
+    <mat-card  color="primary" class="teeType">
+        <mat-card-actions *ngFor="let tee of tees">
+            <button mat-raised-button [style.background-color]='tee.teeHexColor' class="textColor"
+                [routerLink]="['/courses', course.id, tee.teeType]">
+                {{tee.teeType}}
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div>

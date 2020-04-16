@@ -1,0 +1,39 @@
+<div>
+    <mat-toolbar color="primary">
+        <mat-toolbar-row>
+            <button mat-icon-button (click)="sidenav.toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-nav-list>
+                <a mat-list-item [routerLink]="['']">Golf Card Online</a>
+            </mat-nav-list>
+            <span fxFlex="auto"></span>
+            <mat-nav-list style="flex-direction: row;">
+                <a mat-list-item [routerLink]="['']">Courses</a>
+            </mat-nav-list>
+            <mat-nav-list>
+                <a mat-list-item [routerLink]="['load-games']">Game History</a>
+            </mat-nav-list>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <mat-sidenav-container class="example-sidenav-container">
+        <mat-sidenav #sidenav>
+            <mat-accordion>
+                <mat-expansion-panel *ngFor="let course of courses" (opened)="openPannel(course.id)">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{course.name}}
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-nav-list *ngFor="let tee of tees">
+                        <a mat-list-item (click)="reRoute(course.id, tee.teeType)">{{tee.teeType}}</a>
+                    </mat-nav-list>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </mat-sidenav>
+        <mat-sidenav-content>
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>

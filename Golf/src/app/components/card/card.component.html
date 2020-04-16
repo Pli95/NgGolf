@@ -1,0 +1,73 @@
+<mat-card class="golfCard">
+    <mat-card-title>{{teeType}}</mat-card-title>
+    <div class="buttons">
+        <button mat-raised-button color="accent" (click)="goBack()">Back</button>
+        <div class="playersButtons">
+            <span>Players</span>
+            <button mat-icon-button (click)="openDialog()">
+                <mat-icon color="primary">
+                    add_circle
+                </mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <table>
+        <tr>
+            <th scope="row">HOLE</th>
+            <th *ngFor="let holeNum of selectedTee |slice:0:half">{{holeNum.hole}}</th>
+            <th>OUT</th>
+            <th *ngFor="let holeNum of selectedTee |slice:half">{{holeNum.hole}}</th>
+            <th>IN</th>
+            <th>TOTAL</th>
+        </tr>
+        <tr class="players">
+            <th scope="row">Yards</th>
+            <td *ngFor="let yards of teeInfo |slice:0:half">{{yards.yards}}</td>
+            <td>{{yardOut}}</td>
+            <td *ngFor="let yards of teeInfo | slice:half">{{yards.yards}}</td>
+            <td>{{yardIn}}</td>
+            <td>{{yardTotal}}</td>
+        </tr>
+        <tr class="players">
+            <th scope="row">Handicap</th>
+            <td *ngFor="let hcp of teeInfo |slice:0:half">{{hcp.hcp}}</td>
+            <td></td>
+            <td *ngFor="let hcp of teeInfo |slice:half">{{hcp.hcp}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr class="players">
+            <th scope="row">Par</th>
+            <td *ngFor="let par of teeInfo |slice:0:half">{{par.par}}</td>
+            <td>{{outTotal}}</td>
+            <td *ngFor="let par of teeInfo |slice:half">{{par.par}}</td>
+            <td>{{inTotal}}</td>
+            <td>{{total}}</td>
+        </tr>
+        <ng-container *ngFor="let players of game$ | async">
+        <tr class="players" *ngFor="let player of players.players">
+            <th scope="row" (mouseenter)="hover = true" (mouseleave)="hover = false">
+                <button mat-icon-button style="margin: 0;" (click)="deletePlayer(player.name)" *ngIf="hover">
+                    <mat-icon color="warn" style="transform: inherit;">
+                        remove_circle
+                    </mat-icon>
+                </button>
+                <span style="margin: 5px;">{{player.name}}</span> </th>
+            <td *ngFor="let par of teeInfo |slice:0:half"><input matInput type="number" min="0"
+                    (blur)="onBlur($event, player.name, player.in, player.out, 'in')"></td>
+            <td>{{player.in}}</td>
+            <td *ngFor="let par of teeInfo |slice:half"><input matInput type="number" min="0"
+                    (blur)="onBlur($event, player.name, player.in, player.out, 'out')"></td>
+            <td>{{player.out}}</td>
+            <td>{{player.total}}</td>
+        </tr>
+        </ng-container>
+    </table>
+
+    <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="finishGame()">Finished Game</button>
+    </mat-card-actions>
+</mat-card>
+
+<canvas id="custom-canvas"></canvas>

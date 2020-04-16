@@ -1,0 +1,7 @@
+<mat-card *ngFor="let game of games$ | async">
+    <h1 *ngIf="!game.id">No History</h1>
+    <h3>{{game.id}}</h3>
+    <p>{{game.tee}}</p>
+    <p *ngFor="let player of game.players"> {{player.name}}: {{player.total}}</p>
+    <button mat-raised-button color="warn" (click)="deleteGame(game.id)">Delete</button>
+</mat-card>

@@ -1,0 +1,32 @@
+.textColor {
+    color: black;
+}
+
+mat-card-actions button {
+    text-transform: capitalize;
+    height: 200px;
+    width: 300px;
+    font-size: 25px;
+    border: solid 1px black;
+}
+
+.teeType {
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.title {
+    text-align: center; 
+    font-size: 40px; 
+    margin: 20px;
+}
+
+mat-card {
+    margin-top: 20px;
+}
+
+button {
+    margin: 20px
+}

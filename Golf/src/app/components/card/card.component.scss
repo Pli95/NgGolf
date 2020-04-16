@@ -1,0 +1,55 @@
+.playersButtons {
+    font-size: 20px;
+    margin: 20px;
+}
+
+.mat-icon {
+    transform: scale(2);
+}
+
+button {
+    margin: 20px
+}
+
+  .players {
+    border-top: 2px solid;
+    height: 38px;
+  }
+
+  table, th, td {
+    border: white solid;
+    border-collapse: collapse;
+    text-align: center;
+  }
+
+  table {
+    margin-bottom: 20px;
+  }
+
+  td {
+    padding: 10px;
+  }
+
+  input {
+    font: inherit;
+    background: transparent;
+    color: currentColor;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin-left: 12px;
+    width: 100%;
+    max-width: 30px;
+    vertical-align: bottom;
+    text-align: inherit;
+  }
+
+  tr button {
+    border: none;
+  }
+
+  // @media screen and (min-width: 1100px) {
+  //   .golfCard {
+  //     position: relative;
+  //   }
+// }

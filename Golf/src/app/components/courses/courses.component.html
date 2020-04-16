@@ -1,0 +1,7 @@
+<div class="courseBox">
+    <mat-card *ngFor="let course of courses">
+        <img mat-card-image [src]="course.image">
+        <mat-card-title>{{course.name}}</mat-card-title>
+        <button [routerLink]="['/courses', course.id]" mat-raised-button color="primary">Select Tee</button>
+    </mat-card>
+</div>
