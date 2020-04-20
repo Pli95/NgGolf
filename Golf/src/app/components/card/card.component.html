@@ -45,8 +45,8 @@
             <td>{{inTotal}}</td>
             <td>{{total}}</td>
         </tr>
-        <ng-container *ngFor="let players of game$ | async">
-        <tr class="players" *ngFor="let player of players.players">
+        <ng-container *ngIf="players !== []">
+        <tr class="players" *ngFor="let player of players">
             <th scope="row" (mouseenter)="hover = true" (mouseleave)="hover = false">
                 <button mat-icon-button style="margin: 0;" (click)="deletePlayer(player.name)" *ngIf="hover">
                     <mat-icon color="warn" style="transform: inherit;">
@@ -55,10 +55,10 @@
                 </button>
                 <span style="margin: 5px;">{{player.name}}</span> </th>
             <td *ngFor="let par of teeInfo |slice:0:half"><input matInput type="number" min="0"
-                    (blur)="onBlur($event, player.name, player.in, player.out, 'in')"></td>
+                    (blur)="onBlur($event, player.name, 'in')"></td>
             <td>{{player.in}}</td>
             <td *ngFor="let par of teeInfo |slice:half"><input matInput type="number" min="0"
-                    (blur)="onBlur($event, player.name, player.in, player.out, 'out')"></td>
+                    (blur)="onBlur($event, player.name, 'out')"></td>
             <td>{{player.out}}</td>
             <td>{{player.total}}</td>
         </tr>

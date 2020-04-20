@@ -2,10 +2,10 @@
 <div mat-dialog-content>
   <mat-form-field>
     <mat-label>Player Name</mat-label>
-    <input matInput [(ngModel)]="data.name" (keypress)="addPlayer($event)">
+    <input matInput [(ngModel)]="name" (keypress)="addPlayer($event, name)">
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="data.name" cdkFocusInitial>Add Player</button>
+  <button mat-button [mat-dialog-close]="name" cdkFocusInitial>Add Player</button>
 </div>

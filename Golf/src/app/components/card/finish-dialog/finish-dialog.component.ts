@@ -17,25 +17,15 @@ export class FinishDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<CharacterDialogComponent>,
-    private dbService: FireBaseService,
     @Inject(MAT_DIALOG_DATA) public data
   ) { }
 
   ngOnInit(): void {
-    this.getCurrentGame()
+    console.log(this.data.players)
   }
 
   onNoClick(): void {
     this.dialogRef.close();
-  }
-
-  getCurrentGame() {
-    this.game$ = this.dbService.getCurrentGameObservable(this.data.id)
-    this.game$.forEach(data => {
-      data[0].players.forEach(player => {
-        console.log(player)
-      })
-    })
   }
 
   

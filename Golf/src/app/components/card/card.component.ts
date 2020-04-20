@@ -17,7 +17,7 @@ import * as confetti from 'canvas-confetti'
   styleUrls: ['./card.component.scss']
 })
 export class CardComponent implements OnInit {
-  num: number = Math.ceil(Math.random() * 1000);
+  // num: number = Math.ceil(Math.random() * 1000);
   // num: number = 419
   isNew = true;
   selectedTee: any;
@@ -35,7 +35,8 @@ export class CardComponent implements OnInit {
   yardOut: number;
   yardTotal: number;
   data: Games;
-  player: Player = { name: '' };
+  players = []
+  player: Player = { name: '', in: 0, out: 0, total: 0 };
 
   games$: Observable<Games[]>;
   game$: Observable<any>
@@ -75,87 +76,67 @@ export class CardComponent implements OnInit {
       })
     ).subscribe();
 
-    this.getCurrentGame()
   }
 
   openDialog() {
     const dialogRef = this.dialog.open(CharacterDialogComponent, {
-      width: '300px',
-      data: { name: this.player.name }
+      width: '300px'
     })
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        if (this.isNew) {
-          this.saveGame()
-        }
-        this.updatePlayer(result, "player")
-        this.player.name = null
+        this.players.push({name: result, in: 0, out: 0, total: 0})
       }
     })
   }
 
   saveGame() {
-    this.dbService.saveGame(this.teeType, this.num)
+    this.dbService.saveGame(this.teeType, this.players).then(_ => {
+      console.log("something")
+    })
     this.isNew = false
   }
 
-  getGames() {
-    this.games$ = this.dbService.getGamesObservable();
-    this.games$.forEach(games => {
-      games.forEach(game => {
-        if (game.id === this.num) {
-          console.log(game.players)
-        }
-      })
-    })
 
-  }
-
-  updatePlayer(value, type: string) {
-    this.dbService.updateGame(this.num, value, type)
-  }
-
-  updateScore(value, type: string, name: string) {
-    this.dbService.updateGame(this.num, value, type, name)
-  }
 
   deletePlayer(name) {
-    this.dbService.deletePlayer(this.num, name)
-    console.log('delete player')
+    let filtered = this.players.filter(player => player.name !== name)
+    
+    this.players = filtered
+
+    console.log(this.players)
 
   }
 
-  onBlur(event, name, inTotal, outTotal, inOrOut) {
+  onBlur(event, name, inOrOut) {
     let score = Number(event.target.value)
+
+    let currentPlayer = this.players.filter(player => player.name === name)
+    console.log(currentPlayer[0])
     if (!score) {
       score = 0
     }
 
     if (inOrOut === 'in') {
-      inTotal += score
-      //update to db
-      this.updateScore(inTotal, "in", name)
+      currentPlayer[0].in += score
+
     }
     else {
-      outTotal += score
-      //update to db
+      currentPlayer[0].out += score
     }
 
-    let total = inTotal + outTotal
-    //update to db
+    currentPlayer[0].total= currentPlayer[0].in + currentPlayer[0].out
 
   }
 
   finishGame() {
-    // confetti.create()()
     const dialogRef = this.dialog.open(FinishDialogComponent, {
       width: '300px',
-      data: { id: this.num, par: this.total }
+      data: { players: this.players, par: this.total }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      this.saveGame()
     })
   }
 
@@ -174,15 +155,6 @@ export class CardComponent implements OnInit {
       this.inTotal += num
     })
     this.total = this.outTotal + this.inTotal
-  }
-
-  getCurrentGame() {
-    this.game$ = this.dbService.getCurrentGameObservable(this.num)
-    this.game$.forEach(data => {
-      data[0].players.forEach(player => {
-        console.log(player)
-      })
-    })
   }
 
 }
