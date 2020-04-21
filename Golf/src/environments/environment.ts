@@ -5,14 +5,6 @@
 export const environment = {
   production: false,
   fireBase: {
-    apiKey: "AIzaSyCT_mZWY0HSSObleXd8I0DKcvLjMvM7lxk",
-    authDomain: "golfappdb.firebaseapp.com",
-    databaseURL: "https://golfappdb.firebaseio.com",
-    projectId: "golfappdb",
-    storageBucket: "golfappdb.appspot.com",
-    messagingSenderId: "118885584354",
-    appId: "1:118885584354:web:bee7319e5fe768d1813dbb",
-    measurementId: "G-0SMB7Q2SVX"
   }
 };
 
