@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap, tap, map } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { GolfCoursesService } from 'src/app/services/golf-courses.service';
 import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { CharacterDialogComponent } from './character-dialog/character-dialog.component';
-import { Observable, of } from 'rxjs';
-import { Games, Player } from 'src/app/interfaces/player';
+import { Observable } from 'rxjs';
+import { Games } from 'src/app/interfaces/player';
 import { FireBaseService } from 'src/app/services/fire-base.service';
 import { FinishDialogComponent } from './finish-dialog/finish-dialog.component';
-import * as confetti from 'canvas-confetti'
+import { NamingSchemePipe } from 'src/app/pipes/naming-scheme.pipe';
+import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-card',
@@ -17,8 +18,8 @@ import * as confetti from 'canvas-confetti'
   styleUrls: ['./card.component.scss']
 })
 export class CardComponent implements OnInit {
-  // num: number = Math.ceil(Math.random() * 1000);
-  // num: number = 419
+  num = 5;
+  newName: string
   isNew = true;
   selectedTee: any;
   teeType: string;
@@ -36,7 +37,8 @@ export class CardComponent implements OnInit {
   yardTotal: number;
   data: Games;
   players = []
-  player: Player = { name: '', in: 0, out: 0, total: 0 };
+  sameName = false;
+  dbId: string
 
   games$: Observable<Games[]>;
   game$: Observable<any>
@@ -48,6 +50,7 @@ export class CardComponent implements OnInit {
     private dbService: FireBaseService,
     private location: Location,
     public dialog: MatDialog,
+    private namingScheme: NamingSchemePipe
   ) { }
 
   ngOnInit(): void {
@@ -80,31 +83,62 @@ export class CardComponent implements OnInit {
 
   openDialog() {
     const dialogRef = this.dialog.open(CharacterDialogComponent, {
-      width: '300px'
+      width: '300px',
+      data: { players: this.players }
     })
 
     dialogRef.afterClosed().subscribe(result => {
+
       if (result) {
-        this.players.push({name: result, in: 0, out: 0, total: 0})
+        this.checkSame(result)
+        if (this.sameName) {
+          result = this.namingScheme.transform(result, "different")
+          this.checkSame(result)
+          if (this.sameName) {
+            result = this.namingScheme.transform(result, "another")
+            this.checkSame(result)
+            if (this.sameName) {
+              result = this.namingScheme.transform(result, "again?")
+              this.checkSame(result)
+              if (this.sameName) {
+                result = this.namingScheme.transform(result, `#${this.num}`)
+                this.num++
+              }
+            }
+          }
+        }
+        this.players.push({ name: result, in: 0, out: 0, total: 0 })
       }
     })
   }
 
+  checkSame(name) {
+    let checkSame = this.players.filter(player => player.name === name)
+    if (checkSame.length !== 0) {
+      this.sameName = true
+    } else {
+      this.sameName = false
+    }
+  }
+
   saveGame() {
-    this.dbService.saveGame(this.teeType, this.players).then(_ => {
-      console.log("something")
-    })
+    this.dbService.saveGame(this.teeType, this.players)
+      .then(firebaseObj => {
+        this.dbId = firebaseObj.id
+      })
     this.isNew = false
+  }
+
+  updateGame() {
+    this.dbService.updateGame(this.dbId, this.players)
   }
 
 
 
   deletePlayer(name) {
     let filtered = this.players.filter(player => player.name !== name)
-    
-    this.players = filtered
 
-    console.log(this.players)
+    this.players = filtered
 
   }
 
@@ -112,7 +146,6 @@ export class CardComponent implements OnInit {
     let score = Number(event.target.value)
 
     let currentPlayer = this.players.filter(player => player.name === name)
-    console.log(currentPlayer[0])
     if (!score) {
       score = 0
     }
@@ -125,7 +158,7 @@ export class CardComponent implements OnInit {
       currentPlayer[0].out += score
     }
 
-    currentPlayer[0].total= currentPlayer[0].in + currentPlayer[0].out
+    currentPlayer[0].total = currentPlayer[0].in + currentPlayer[0].out
 
   }
 
@@ -136,12 +169,31 @@ export class CardComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.saveGame()
+      if (this.isNew) {
+        this.saveGame()
+      }
+      else {
+        this.updateGame()
+      }
+
+      if(result === "alert") {
+        this.goBack()
+      }
+
     })
   }
 
   goBack() {
-    this.location.back()
+    const dialogRef = this.dialog.open(AlertDialogComponent, {
+      width: '300px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result === 'confirm'){
+        this.location.back()
+      }
+    })
+    
   }
 
   doMath(nums: Array<number>) {

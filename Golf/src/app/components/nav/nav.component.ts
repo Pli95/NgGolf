@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { GolfCoursesService } from 'src/app/services/golf-courses.service';
-import { Courses } from 'src/app/interfaces/courses';
-import { IsLoadingService } from '@service-work/is-loading';
-import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { Router} from '@angular/router';
+
 
 @Component({
   selector: 'app-nav',
@@ -19,7 +17,6 @@ export class NavComponent implements OnInit {
 
   constructor(
     private courseService: GolfCoursesService,
-    private isLoadingService: IsLoadingService,
     private router: Router
   ) { }
 

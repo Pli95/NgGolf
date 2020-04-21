@@ -1,0 +1,8 @@
+<h1 mat-dialog-title color="warn">ALERT!</h1>
+<div mat-dialog-content>
+    <p>Are you sure? Doing so will end your game and there's no way to start again</p>
+</div>
+<div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]>Cancel</button>
+    <button mat-button [mat-dialog-close]="'confirm'" cdkFocusInitial>Confirm</button>
+</div>

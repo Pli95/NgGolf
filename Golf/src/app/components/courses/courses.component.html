@@ -5,3 +5,7 @@
         <button [routerLink]="['/courses', course.id]" mat-raised-button color="primary">Select Tee</button>
     </mat-card>
 </div>
+
+<div *ngIf="!courses" class="spinner-wrapper">
+    <mat-spinner></mat-spinner>
+</div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FireBaseService } from 'src/app/services/fire-base.service';
-import { Observable, empty } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Games } from 'src/app/interfaces/player';
 
 @Component({
@@ -24,14 +24,6 @@ export class LoadGamesComponent implements OnInit {
 
   getGames() {
     this.games$ = this.dbService.getGamesObservable();
-    this.games$.forEach(game => {
-      if (game === []) {
-        console.log("empty")
-      }
-      this.players = game
-      console.log(this.players)
-    })
-    
   }
 
   deleteGame(id) {

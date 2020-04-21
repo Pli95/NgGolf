@@ -30,7 +30,6 @@ export class TeeTypeComponent implements OnInit {
       tap(course => {
         this.tees = course.holes[0].teeBoxes
         this.course = course
-        // console.log(this.tees)
       })
     ).subscribe();
   }

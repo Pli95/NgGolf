@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { GolfCoursesService } from 'src/app/services/golf-courses.service';
-import { Courses } from 'src/app/interfaces/courses';
 
 @Component({
   selector: 'app-courses',

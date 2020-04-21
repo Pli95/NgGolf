@@ -3,8 +3,6 @@ import { AngularFirestoreCollection, AngularFirestore, DocumentChangeAction } fr
 import { Games, Player } from '../interfaces/player';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import * as firebase from 'firebase/app';
-// import 'firebase/<PACKAGE>';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +20,7 @@ export class FireBaseService {
         map((items: DocumentChangeAction<Games>[]): Games[] => {
           return items.map((item: DocumentChangeAction<Games>): Games => {
             return {
-              id: item.payload.doc.data().id,
+              id: item.payload.doc.id,
               players: item.payload.doc.data().players,
               tee: item.payload.doc.data().tee,
             }
@@ -31,29 +29,24 @@ export class FireBaseService {
       );
   }
 
-  getCurrentGameObservable(_id: number) {
-    let doc = this.db.collection<Games>('games', ref => ref.where('id', "==", _id))
-    
-
-    return doc.valueChanges()
+  saveGame(tee: string, players: Player[]):Promise<any> {
+    return this.gamesRef.add({players ,tee})
   }
 
-  saveGame(tee: string, players: Player[]) {
-    return this.gamesRef.add({id: "test", players ,tee})
-      .then(_ => {
-        console.log('success on add')
-      })
-      .catch(error => console.log('add', error));
-  }
-
-  deleteGame(_id: number) {
-    let doc = this.db.collection<Games>('games', ref => ref.where('id', "==", _id))
-
-    doc.snapshotChanges()
-    .subscribe((res: any) => {
-      let id = res[0].payload.doc.id
-      this.db.collection(`games/`).doc(id).delete()
+  updateGame(_id: string, players: Player[]) {
+    return this.gamesRef.doc(_id).update({players})
+    .then(_ => {
+      console.log('success on update')
     })
+    .catch(error => console.log('update', error));
+  }
+
+  deleteGame(_id: string) {
+    return this.gamesRef.doc(_id).delete()
+    .then(_ => {
+      console.log('success on delete')
+    })
+    .catch(error => console.log('delete', error));
   }
 
 }

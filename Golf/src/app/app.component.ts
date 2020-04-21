@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { GolfCoursesService } from './services/golf-courses.service';
 import { IsLoadingService } from '@service-work/is-loading';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { title } from 'process';
 
 @Component({
   selector: 'app-root',

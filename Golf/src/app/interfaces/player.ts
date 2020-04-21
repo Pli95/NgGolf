@@ -6,7 +6,7 @@ export interface Player {
 }
 
 export interface Games {
-    id: string;
-    players?: Array<Player>;
+    id?: string;
+    players: Array<Player>;
     tee: string;
 }

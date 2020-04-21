@@ -18,6 +18,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TeeTypeComponent } from './components/tee-type/tee-type.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -28,6 +29,8 @@ import { environment } from '../environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { LoadGamesComponent } from './components/load-games/load-games.component';
 import { FinishDialogComponent } from './components/card/finish-dialog/finish-dialog.component';
+import { NamingSchemePipe } from './pipes/naming-scheme.pipe';
+import { AlertDialogComponent } from './components/card/alert-dialog/alert-dialog.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,9 @@ import { FinishDialogComponent } from './components/card/finish-dialog/finish-di
     TeeTypeComponent,
     CharacterDialogComponent,
     LoadGamesComponent,
-    FinishDialogComponent
+    FinishDialogComponent,
+    NamingSchemePipe,
+    AlertDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -56,12 +61,13 @@ import { FinishDialogComponent } from './components/card/finish-dialog/finish-di
     MatInputModule,
     MatDialogModule,
     MatProgressBarModule,
+    MatProgressSpinnerModule,
     FlexLayoutModule,
     FormsModule,
     AngularFireModule.initializeApp(environment.fireBase),
     AngularFirestoreModule,
   ],
-  providers: [],
+  providers: [NamingSchemePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
